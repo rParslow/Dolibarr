@@ -1,0 +1,59 @@
+# Dolibarr lang file
+Module110550Name=Paiement Lyra
+Module110550Description=Module permettant de proposer le paiement par carte bancaire pour toutes les banques
+
+LyraSetup=Configuration du module Lyra
+
+# Setup
+LyraSetupPageInfo=Cette page permet de configurer le paiement Lyra
+AccountParameters=Paramètres du compte
+LYRA_CTX_MODE=Mode de fonctionnement
+LYRA_SITE_ID=Identifiant de votre site
+LYRA_KEY_TEST=Certificat en mode test
+LYRA_KEY_PROD=Certificat en mode production
+LYRA_PLATFORM_URL=Url de la page de paiement
+LYRA_LANGUAGE=Langue par défaut
+LYRA_AVAILABLE_LANGUAGES=Langues disponibles
+LYRA_CAPTURE_DELAY=Délai avant remise en banque
+LYRA_VALIDATION_MODE=Mode de validation
+LYRA_PAYMENT_CARDS=Types de carte
+LYRA_AMOUNT_MIN=Montant minimum
+LYRA_AMOUNT_MAX=Montant maximum
+LYRA_REDIRECT_ENABLED=Redirection automatique vers une URL à la fin du paiement
+LYRA_REDIRECT_URL=URL de retour après validation du paiement
+LYRA_REDIRECT_SUCCESS_TIMEOUT=Temps avant redirection (paiement avec succès)
+LYRA_PAYONLINE_SENDEMAIL=Transmettre les rapports de paiement à l'adresse
+UrlGenerationParameters=Paramètres de génération des URL
+SecurityToken=Jeton de sécurité
+SecurityTokenIsUnique=Utiliser un jeton unique?
+LYRA_RETURN_MODE=Mode de retour
+LYRA_URL_RETURN=URL de retour à la boutique
+LYRA_URL_CHECK=Url serveur à renseigner dans le back office Lyra
+OthersParameters=Autres paramètres
+LYRA_UPDATE_INVOICE_STATUT=Mettre à jour le statut de la facture après un paiement
+LYRA_BANK_ACCOUNT_ID=Compte bancaire à créditer des paiements
+LYRA_BANK_USER_LOGIN=Utilisateur pour la création des factures et paiements
+FollowingUrlAreAvailableToMakePayments=URL disponibles pour recevoir des paiements
+ToOfferALinkForOnlinePaymentOnFreeAmount=Pour un montant libre, communiquer le lien
+ToOfferALinkForOnlinePaymentOnOrder=Pour un paiement sur une commande
+
+
+# Payment page
+PaymentForm=Formulaire de paiement
+ThisIsInformationOnPayment=Voici les informations concernant le paiement
+Creditor=Créditeur
+PaymentCode=Code paiement
+LYRA_SITE_ID_UNDEFINED=Identifiant site non défini
+LYRA_KEY_TEST_UNDEFINED=Clé de test non définie
+LYRA_KEY_TEST_UNDEFINED=Clé de production non définie
+LYRA_PLATFORM_URL_UNDEFINED=URL plateforme non définie
+LYRA_REF_PARAM_UNDEFINED=Référence manquante
+YouAreCurrentlyInSandboxMode=Vous êtes actuellement en mode test
+LyraDoPayment=Procéder au paiement
+
+# Success
+NewLyraPaymentReceived=Nouveau paiement CB
+NewLyraPaymentReceivedText=Un nouveau paiement CB a été reçu, voici les informations
+ThankYouForYourPayment=Merci pour votre paiement !
+ErrorOccurredDuringPayment=Erreur durant le paiement !
+ErrorOccurredDuringPaymentDesc=Une erreur est survenue durant le paiement, merci de réessayer ultérieurement
