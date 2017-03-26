@@ -1,0 +1,5 @@
+#For each brand or Bank provide a PNG image where xx is Brand/Bank
+
+PNG Image: ‘object_xx.png’
+  pixelWidth: 14
+  pixelHeight: 14
