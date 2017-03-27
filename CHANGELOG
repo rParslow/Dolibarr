@@ -1,6 +1,20 @@
 Lyra module for Dolibarr ERP/CRM
 ========================================
 
+Version 0.3
+Module became Agnostic to allow use of all plateforms 
+ Payzen               https://secure.payzen.eu/vads-payment/
+ Systempay            https://paiement.systempay.fr/vads-payment/
+ SP Plus              https://paiement.systempay.fr/vads-payment/
+ Cyberplus Paiement   https://paiement.systempay.fr/vads-payment/
+ Sogecommerce         https://sogecommerce.societegenerale.eu/vads-payment/
+
+Documentation links 
+ https://payzen.io/
+ https://systempay.cyberpluspaiement.com/html/documentation.html
+ https://sogecommerce.societegenerale.eu/doc/
+
+
 Version 0.2
 Add payment on order
 
