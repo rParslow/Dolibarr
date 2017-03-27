@@ -1,0 +1,12 @@
+Lyra module for Dolibarr ERP/CRM
+========================================
+
+Version 0.2
+Add payment on order
+
+Version 0.1
+Initial version : payment with free amount
+
+
+Fork from https://git.aternatik.net/dolibarr/systempay/tree/master
+to support Payzen and others brand from Lyra-Network payment platform
