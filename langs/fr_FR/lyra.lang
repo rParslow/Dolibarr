@@ -36,6 +36,7 @@ LYRA_BANK_USER_LOGIN=Utilisateur pour la création des factures et paiements
 FollowingUrlAreAvailableToMakePayments=URL disponibles pour recevoir des paiements
 ToOfferALinkForOnlinePaymentOnFreeAmount=Pour un montant libre, communiquer le lien
 ToOfferALinkForOnlinePaymentOnOrder=Pour un paiement sur une commande
+ToOfferALinkForOnlinePaymentOnInvoice=Pour un paiement sur une facture
 
 
 # Payment page

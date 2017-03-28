@@ -256,7 +256,7 @@ function getLyraPaymentUrl($mode,$type,$ref='',$amount='9.99',$freetag='your_fre
     }
     if ($type == 'invoice')
     {
-        $out=DOL_MAIN_URL_ROOT.'/public/paypal/newpayment.php?source=invoice&ref='.($mode?'<font color="#666666">':'');
+        $out=dol_buildpath('/lyra/public/lyra/payment.php',2).'?source=invoice&ref='.($mode?'<font color="#666666">':'');
         if ($mode == 1) $out.='invoice_ref';
         if ($mode == 0) $out.=urlencode($ref);
 	    $out.=($mode?'</font>':'');

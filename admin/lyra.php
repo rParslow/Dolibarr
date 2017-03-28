@@ -398,6 +398,9 @@ print '<strong>'.getLyraPaymentUrl(1,'free')."</strong><br><br>\n";
 print img_picto('','object_order.png').' '.$langs->trans("ToOfferALinkForOnlinePaymentOnOrder",$servicename).':<br>';
 print '<strong>'.getLyraPaymentUrl(1,'order','PROV24')."</strong><br><br>\n";
 
+print img_picto('','object_invoice.png').' '.$langs->trans("ToOfferALinkForOnlinePaymentOnInvoice",$servicename).':<br>';
+print '<strong>'.getLyraPaymentUrl(1,'invoice','PROV24')."</strong><br><br>\n";
+
 
 // Page end
 dol_fiche_end();

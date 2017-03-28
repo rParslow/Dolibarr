@@ -56,7 +56,7 @@ class modLyra extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description of module Lyra";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '0.3';
+		$this->version = '0.4';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -64,7 +64,7 @@ class modLyra extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
-		$this->picto='lyra@lyra';
+		$this->picto='payzen@lyra';
 
 		// Defined all module parts (triggers, login, substitutions, menus, css, etc...)
 		// for default path (eg: /lyra/core/xxxxx) (0=disable, 1=enable)
@@ -111,6 +111,13 @@ class modLyra extends DolibarrModules
 		$this->const = array(
 				0=>array('LYRA_CTX_MODE','chaine','TEST','',1),
 				1=>array('LYRA_PLATFORM_URL','chaine','https://secure.payzen.eu/vads-payment/','',1),
+                2=>array('LYRA_LANGUAGE','chaine','fr','',1),
+                3=>array('LYRA_AVAILABLE_LANGUAGES','chaine','fr','',1),
+                4=>array('LYRA_CAPTURE_DELAY','chaine',0,'',1),
+                5=>array('LYRA_REDIRECT_ENABLED','chaine',1,'',1),
+                6=>array('LYRA_REDIRECT_URL','chaine',dol_buildpath('/lyra/public/lyra/success.php',2),'',1),
+                7=>array('LYRA_URL_RETURN','chaine',dol_buildpath('/lyra/public/lyra/confirm.php',2),'',1),
+                8=>array('LYRA_REDIRECT_SUCCESS_TIMEOUT','chaine',3,'',1),
 		);
 
 		// Array to add new pages in new tabs

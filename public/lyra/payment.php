@@ -473,6 +473,114 @@ if (GETPOST("source") == 'order' && $valid)
 	print '<input type="hidden" name="desc" value="'.$langs->trans("Order").' '.$order->ref.'">'."\n";
 }
 
+/*
+ *  Payment on customer invoice
+ */
+if (GETPOST("source") == 'invoice' && $valid)
+{
+	$found=true;
+	$langs->load("invoices");
+
+	require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+
+	$facture=new Facture($db);
+	$result=$facture->fetch('',$ref);
+	if ($result < 0)
+	{
+		$mesg=$facture->error;
+		$error++;
+	}
+	else
+	{
+		$result=$facture->fetch_thirdparty($facture->socid);
+	}
+
+	$amount=$facture->total_ttc;
+	if (GETPOST("amount",'int')) $amount=GETPOST("amount",'int');
+	$amount=price2num($amount);
+
+	$fulltag='INV='.$facture->ref.'.CUS='.$facture->thirdparty->id;
+	//$fulltag.='.NAM='.strtr($facture->thirdparty->name,"-"," ");
+	if (! empty($TAG)) { $tag=$TAG; $fulltag.='.TAG='.$TAG; }
+	$fulltag=dol_string_unaccent($fulltag);
+
+	// Creditor
+	$var=!$var;
+	print '<tr class="CTableRow'.($var?'1':'2').'"><td class="CTableRow'.($var?'1':'2').'">'.$langs->trans("Creditor");
+	print '</td><td class="CTableRow'.($var?'1':'2').'"><b>'.$creditor.'</b>';
+	print '<input type="hidden" name="creditor" value="'.$creditor.'">';
+	print '</td></tr>'."\n";
+
+	// Debitor
+	$var=!$var;
+	print '<tr class="CTableRow'.($var?'1':'2').'"><td class="CTableRow'.($var?'1':'2').'">'.$langs->trans("ThirdParty");
+	print '</td><td class="CTableRow'.($var?'1':'2').'"><b>'.$facture->thirdparty->name.'</b>';
+
+	// Object
+	$var=!$var;
+	$text='<b>'.$langs->trans("PaymentInvoiceRef",$facture->ref).'</b>';
+	print '<tr class="CTableRow'.($var?'1':'2').'"><td class="CTableRow'.($var?'1':'2').'">'.$langs->trans("Designation");
+	print '</td><td class="CTableRow'.($var?'1':'2').'">'.$text;
+	print '<input type="hidden" name="source" value="'.GETPOST("source",'alpha').'">';
+	print '<input type="hidden" name="ref" value="'.$facture->ref.'">';
+	print '</td></tr>'."\n";
+
+	// Amount
+	$var=!$var;
+	print '<tr class="CTableRow'.($var?'1':'2').'"><td class="CTableRow'.($var?'1':'2').'">'.$langs->trans("Amount");
+	if (empty($amount)) print ' ('.$langs->trans("ToComplete").')';
+	print '</td><td class="CTableRow'.($var?'1':'2').'">';
+	if (empty($amount) || ! is_numeric($amount))
+	{
+		print '<input type="hidden" name="amount" value="'.GETPOST("amount",'int').'">';
+		print '<input class="flat" size=8 type="text" name="newamount" value="'.price(GETPOST("newamount","int")).'">';
+	}
+	else {
+		print '<b>'.price($amount).'</b>';
+		print '<input type="hidden" name="amount" value="'.$amount.'">';
+		print '<input type="hidden" name="newamount" value="'.price($amount).'">';
+	}
+	// Currency
+	print ' <b>'.$langs->trans("Currency".$currency).'</b>';
+	print '<input type="hidden" name="currency" value="'.$currency.'">';
+	print '</td></tr>'."\n";
+
+	// Tag
+	$var=!$var;
+	print '<tr class="CTableRow'.($var?'1':'2').'"><td class="CTableRow'.($var?'1':'2').'">'.$langs->trans("PaymentCode");
+	print '</td><td class="CTableRow'.($var?'1':'2').'"><b>'.$fulltag.'</b>';
+	print '<input type="hidden" name="tag" value="'.$tag.'">';
+	print '<input type="hidden" name="fulltag" value="'.$fulltag.'">';
+	print '</td></tr>'."\n";
+
+	// Shipping address
+	$shipToName=$facture->thirdparty->name;
+	$shipToStreet=$facture->thirdparty->address;
+	$shipToCity=$facture->thirdparty->town;
+	$shipToState=$facture->thirdparty->state_code;
+	$shipToCountryCode=$facture->thirdparty->country_code;
+	$shipToZip=$facture->thirdparty->zip;
+	$shipToStreet2='';
+	$phoneNum=$facture->thirdparty->phone;
+	if ($shipToName && $shipToStreet && $shipToCity && $shipToCountryCode && $shipToZip)
+	{
+		print '<input type="hidden" name="shipToName" value="'.$shipToName.'">'."\n";
+		print '<input type="hidden" name="shipToStreet" value="'.$shipToStreet.'">'."\n";
+		print '<input type="hidden" name="shipToCity" value="'.$shipToCity.'">'."\n";
+		print '<input type="hidden" name="shipToState" value="'.$shipToState.'">'."\n";
+		print '<input type="hidden" name="shipToCountryCode" value="'.$shipToCountryCode.'">'."\n";
+		print '<input type="hidden" name="shipToZip" value="'.$shipToZip.'">'."\n";
+		print '<input type="hidden" name="shipToStreet2" value="'.$shipToStreet2.'">'."\n";
+		print '<input type="hidden" name="phoneNum" value="'.$phoneNum.'">'."\n";
+	}
+	else
+	{
+		print '<!-- Shipping address not complete, so we don t use it -->'."\n";
+	}
+	print '<input type="hidden" name="email" value="'.$facture->thirdparty->email.'">'."\n";
+	print '<input type="hidden" name="desc" value="'.$langs->trans("Order").' '.$facture->ref.'">'."\n";
+}
+
 print '</table>';
 print '</td></tr>';
 

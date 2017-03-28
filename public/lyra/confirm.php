@@ -292,23 +292,110 @@ if($lyra_resp->isAcceptedPayment()) {
 				}
 			}
 		}
+
+		/*
+		 * Payment done on an invoice :
+		* 	create payment
+		* 	if payment = total facture mark as paid
+		*/
+		// Search object ref for order
+		if( preg_match('#INV=(.*)\..*#', $order_info,$matches))
+		{
+			$referenceDolibarr = $matches[1];
 		
-		// Une belle page pour le client
-		if($lyra_resp->get('ctx_mode') == 'TEST') {
-			echo '<html>';
-			echo '<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head>';
-			echo '<body>';
-			echo "Avertissement mode TEST : la commande a bien été enregistrée, mais la validation automatique n'a pas fonctionné.";
-			echo "<br/>Vérifiez que vous avez correctement configuré l'url serveur (".$params->LYRA_URL_RETURN.") ";
-			echo "dans l'outil de gestion de caisse Lyra et qu'elle est accessible depuis internet";
-			echo '<br/>En mode production, vous serez redirigé automatiquement vers <a href="'.$url_success.'">la page de succès</a>';
-			echo '</body></html>';
-			exit();
-		} else {
-			header("Location:" . $url_success);
-			exit();
+			$item = new Facture($db);
+		
+			if( ! empty($referenceDolibarr))
+			{
+				$invoice = new Facture($db);
+				$result = $invoice->fetch('', $referenceDolibarr);
+		
+				if ($result < 0)
+				{
+					$err = true;
+					dol_syslog('LYRA: Invoice with specified reference does not exist');
+				}
+				else
+				{
+					$result = $invoice->fetch_thirdparty();
+					// Set transaction reference on order
+					$item->setValueFrom('ref_int', $referenceTransaction, $invoice->table_element, $invoice->id, $format='text', $id_field='rowid');
+		
+                    $result = $item->fetch_thirdparty();
+                    
+                    // Set transaction reference on invoice
+                    $item->setValueFrom('ref_int', $referenceTransaction, $item->table_element, $item->id, $format='text', $id_field='rowid');
+						
+                    // on verifie si l'objet est en numerotation provisoire
+                    $objectref = substr($item->ref, 1, 4);
+                    if ($objectref == 'PROV')
+						{
+							$savdate=$item->date;
+							if (! empty($conf->global->FAC_FORCE_DATE_VALIDATION))
+                                {
+                                    $item->date=dol_now();
+                                    $item->date_lim_reglement=$item->calculate_date_lim_reglement();
+                                }
+							$numref = $item->getNextNumRef($soc);
+							
+							// Set ref on invoice
+							$item->setValueFrom('facnumber', $numref, $item->table_element, $item->id, $format='text', $id_field='rowid');
+							//$object->date=$savdate;
+						}
+                    
+						// Ajoute le paiement
+						$db->begin();
+						
+						// Creation of payment line
+						$payment = new Paiement($db);
+						$payment->datepaye     = dol_now();
+						$payment->amounts      = array($item->id => price2num($FinalPaymentAmt));
+						$payment->paiementid   = dol_getIdFromCode($db, 'CB', 'c_paiement');
+						$payment->num_paiement = $referenceTransaction;
+						$payment->note         = '';
+						
+						$paymentId = $payment->create($user, $params->LYRA_UPDATE_INVOICE_STATUT);
+						
+						if ($paymentId < 0)
+						{
+							dol_syslog('LYRA: Payment has not been created in the database');
+						}
+						else
+						{
+							if (!empty($params->LYRA_BANK_ACCOUNT_ID))
+							{
+								$payment->addPaymentToBank($user, 'payment', '(CustomerInvoicePayment)', $params->LYRA_BANK_ACCOUNT_ID, $item->client->name, $clientBankName);
+								
+								/*
+								 * TODO : validate invoice (be careful !!) 
+								 if ( $params->LYRA_UPDATE_INVOICE_STATUT > 0)
+								{
+									$item->validate($user);
+								}
+								*/
+							}
+						}
+						$db->commit();
+					}
+				}
+			}
 		}
-	}
+        
+    // Une belle page pour le client
+    if($lyra_resp->get('ctx_mode') == 'TEST') {
+        echo '<html>';
+        echo '<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head>';
+        echo '<body>';
+        echo "Avertissement mode TEST : la commande a bien été enregistrée, mais la validation automatique n'a pas fonctionné.";
+        echo "<br/>Vérifiez que vous avez correctement configuré l'url serveur (".$params->LYRA_URL_RETURN.") ";
+        echo "dans l'outil de gestion de caisse Lyra et qu'elle est accessible depuis internet";
+        echo '<br/>En mode production, vous serez redirigé automatiquement vers <a href="'.$url_success.'">la page de succès</a>';
+        echo '</body></html>';
+        exit();
+    } else {
+        header("Location:" . $url_success);
+        exit();
+    }
 }
 else {
 	// Message de confirmation
