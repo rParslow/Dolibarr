@@ -1,6 +1,9 @@
 Lyra module for Dolibarr ERP/CRM
 ========================================
 
+Version 0.4
+Add payment on invoice
+
 Version 0.3
 Module became Agnostic to allow use of all plateforms 
  Payzen               https://secure.payzen.eu/vads-payment/
