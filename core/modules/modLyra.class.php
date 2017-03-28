@@ -110,7 +110,7 @@ class modLyra extends DolibarrModules
 		// );
 		$this->const = array(
 				0=>array('LYRA_CTX_MODE','chaine','TEST','',1),
-				1=>array('LYRA_PLATFORM_URL','chaine','https://paiement.lyra.fr/vads-payment/','',1),
+				1=>array('LYRA_PLATFORM_URL','chaine','https://secure.payzen.eu/vads-payment/','',1),
 		);
 
 		// Array to add new pages in new tabs
