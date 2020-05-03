@@ -217,7 +217,9 @@ if (GETPOST("action") == 'dopayment')
 	if($lang && $lang->code && in_array(strtolower($lang->code), $lyra_api->getSupportedLanguages())) {
 		$lyra_api->set('language', strtolower($lang->code));
 	} else {
-		$lyra_api->set('language', LYRA_LANGUAGE);
+		$lyra_api->set('language', $params->LYRA_LANGUAGE);
+		#$lyra_api->set('language', 'fr');
+
 	}
 	
 	$config_keys = array(
