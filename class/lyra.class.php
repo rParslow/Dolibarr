@@ -52,7 +52,7 @@ if(!@class_exists('Lyra', false)) {
 		 */
 		var $redirectEnabled;
 		/**
-		 * SHA-1 authentication signature
+		 * Authentication signature (SHA-1 moved to HMAC)
 		 * @var string
 		 * @access private
 		 */
@@ -594,6 +594,7 @@ if(!@class_exists('Lyra', false)) {
 				}
 			}
 			$signContent .= $key;
+			# SHA-1 moved to HMAC
 			$sign = $hashed ? sha1($signContent) : $signContent;
 			return $sign;
 		}
@@ -1123,7 +1124,7 @@ if(!@class_exists('LyraResponse', false)) {
 	
 		/**
 		 * Return the signature computed from the received parameters, for log/debug purposes.
-		 * @param boolean $hashed apply sha1, false by default
+		 * @param boolean $hashed apply HMAC, false by default
 		 * @return string
 		 */
 		function getComputedSignature($hashed = false) {
