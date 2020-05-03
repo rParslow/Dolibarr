@@ -594,8 +594,10 @@ if(!@class_exists('Lyra', false)) {
 				}
 			}
 			$signContent .= $key;
-			# SHA-1 moved to HMAC
-			$sign = $hashed ? sha1($signContent) : $signContent;
+			# SHA-1 moved to HMAC-SHA256
+			$sign = $hashed ? base64_encode(hash_hmac('sha256',$signContent, $key, true)) : $signContent;
+			# uncomment this line to revert to SHA-1
+			#$sign = $hashed ? sha1($signContent) : $signContent;
 			return $sign;
 		}
 	
